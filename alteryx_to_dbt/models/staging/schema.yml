@@ -1,0 +1,310 @@
+
+version: 2
+
+models:
+  - name: stg_sales_territory
+    description: "Staging table with sales by territory."
+    config:
+      tags: "agg_sales_region"
+    columns:
+      - name: territory_id
+        description: "Unique identifier for the sales territory."
+        data_tests:
+          - unique
+          - not_null
+      - name: territory_name
+        description: "Name of the sales territory."
+      - name: country_region_code
+        description: "Code for the country or region of the territory."
+      - name: group_name
+        description: "Group or division name for the territory."
+      - name: sales_ytd
+        description: "Sales year-to-date for the territory."
+      - name: sales_last_year
+        description: "Sales for the previous year for the territory."
+      - name: cost_ytd
+        description: "Cost year-to-date for the territory."
+      - name: cost_last_year
+        description: "Cost for the previous year for the territory."
+      - name: row_guid
+        description: "Globally unique identifier for the territory row."
+      - name: updated_at
+        description: "Timestamp when the record was last updated in the source."
+      - name: extracted_at
+        description: "Timestamp when the record was extracted from the source."
+
+  - name: stg_sales_person
+    description: "Staging table with sales by entity, excluding rows where territory_id is null."
+    config:
+      tags: "agg_sales_region"
+    columns:
+      - name: business_entity_id
+        description: "Unique identifier for the salesperson (business entity)."
+        data_tests:
+          - unique
+          - not_null
+      - name: territory_id
+        description: "Identifier for the associated sales territory."
+      - name: sales_quota
+        description: "Sales quota assigned to the salesperson"
+      - name: bonus
+        description: "Bonus compensation for the salesperson."
+      - name: commission_pct
+        description: "Commission percentage for the salesperson."
+      - name: sales_ytd
+        description: "Sales year-to-date for the salesperson."
+      - name: sales_last_year
+        description: "Sales for the previous year for the salesperson."
+      - name: row_guid
+        description: "Globally unique identifier for the salesperson row."
+      - name: updated_at
+        description: "Timestamp when the record was last updated in the source."
+      - name: extracted_at
+        description: "Timestamp when the record was extracted from the source."
+
+  - name: stg_country_region
+    description: "Staging table with region details."
+    config:
+      tags: "agg_sales_region"
+    columns:
+      - name: country_region_code
+        description: "Country or region code."
+        data_tests:
+          - unique
+          - not_null
+      - name: country_region_name
+        description: "Full name of the country or region."
+      - name: updated_at
+        description: "Timestamp when the record was last updated in the source."
+      - name: extracted_at
+        description: "Timestamp when the record was extracted from the source."
+
+  - name: stg_state_province
+    description: "Staging table with state details, excluding rows where territory_name does not have '?' character."
+    config:
+      tags: "agg_sales_region"
+    columns:
+      - name: state_province_id
+        description: "Unique identifier for the state or province."
+        data_tests:
+          - unique
+          - not_null
+      - name: state_province_code
+        description: "Code for the state or province."
+      - name: country_region_code
+        description: "Country or region code for the state/province."
+      - name: is_only_state_province_flag
+        description: "Indicates if this is the only state or province for the country."
+      - name: territory_name
+        description: "Name of the associated territory."
+      - name: territory_id
+        description: "Identifier for the associated territory."
+      - name: updated_at
+        description: "Timestamp when the record was last updated in the source."
+      - name: extracted_at
+        description: "Timestamp when the record was extracted from the source."
+
+  - name: stg_purchase_order_header
+    description: "Staging table with purchase details, specially monetary values."
+    config:
+      tags: "purchasing_orders"
+    columns:
+      - name: purchase_order_id
+        description: "Unique identifier for the purchase order."
+        data_tests:
+          - unique
+          - not_null
+      - name: revision_number
+        description: "Revision number of the purchase order."
+      - name: purchase_order_status
+        description: "Status of the purchase order."
+      - name: employee_id
+        description: "Identifier for the employee responsible for the order."
+      - name: vendor_id
+        description: "Identifier for the vendor."
+      - name: ship_method_id
+        description: "Identifier for the shipping method."
+      - name: subtotal
+        description: "Subtotal amount for the order."
+      - name: tax_amt
+        description: "Tax amount for the order."
+      - name: freight
+        description: "Freight or shipping cost for the order."
+      - name: total_due
+        description: "Total due for the order."
+      - name: order_date
+        description: "Date the purchase order was placed."
+      - name: ship_date
+        description: "Date the order was shipped."
+      - name: updated_at
+        description: "Timestamp when the record was last updated in the source."
+      - name: extracted_at
+        description: "Timestamp when the record was extracted from the source."
+
+  - name: stg_purchase_order_detail
+    description: "Staging table with purchase details, specially quantities."
+    config:
+      tags: "purchasing_orders"
+    columns:
+      - name: purchase_order_id
+        description: "Identifier for the associated purchase order."
+        data_tests:
+          - unique
+          - not_null
+      - name: purchase_order_detail_id
+        description: "Unique identifier for the purchase order detail line."
+      - name: order_qty
+        description: "Ordered quantity for the line item."
+      - name: product_id
+        description: "Unique identifier for the product."
+      - name: unit_price
+        description: "Price per unit for the line item."
+      - name: line_total
+        description: "Total amount for the line item."
+      - name: received_qty
+        description: "Quantity received."
+      - name: rejected_qty
+        description: "Quantity rejected upon receipt."
+      - name: stocked_qty
+        description: "Quantity stocked after receipt."
+      - name: due_date
+        description: "Date the order is due."
+      - name: updated_at
+        description: "Timestamp when the record was last updated in the source."
+      - name: extracted_at
+        description: "Timestamp when the record was extracted from the source."
+
+  - name: stg_product
+    description: "Staging table with product details."
+    config:
+      tags: "purchasing_orders"
+    columns:
+      - name: product_id
+        description: "Unique identifier for the product."
+        data_tests:
+          - unique
+          - not_null
+      - name: product_name
+        description: "Name of the product."
+      - name: product_number
+        description: "Product number or SKU."
+      - name: make_flag
+        description: "false = Product is purchased, true = Product is manufactured in-house."
+      - name: finished_goods_flag
+        description: "false = Product is not a salable item, true = Product is salable."
+      - name: color
+        description: "Color of the product, if specified."
+      - name: safety_stock_level
+        description: "Minimum quantity required in stock."
+      - name: re_order_point
+        description: "Inventory level that triggers a new order."
+      - name: standard_cost
+        description: "Standard cost of the product."
+      - name: list_price
+        description: "List price for the product."
+      - name: product_size
+        description: "Size specification for the product."
+      - name: size_unit_measure_code
+        description: "Unit of measure code for the product size."
+      - name: weight_unit_measure_code
+        description: "Unit of measure code for the product weight."
+      - name: product_weight
+        description: "Weight of the product."
+      - name: days_to_manufacture
+        description: "Number of days required to manufacture the product."
+      - name: product_line
+        description: "Product line code/classification."
+      - name: product_class
+        description: "Product class code/classification."
+      - name: product_style
+        description: "Product style code/classification."
+      - name: product_subcategory_id
+        description: "Identifier for the product's subcategory."
+      - name: product_model_id
+        description: "Identifier for the product's model."
+      - name: sell_start_date
+        description: "Date the product became available for sale."
+      - name: sell_end_date
+        description: "Date the product was discontinued from sale."
+      - name: discontinued_date
+        description: "Date the product was fully discontinued."
+      - name: rowguid
+        description: "Globally unique row identifier."
+      - name: updated_at
+        description: "Timestamp when the record was last updated in the source."
+      - name: extracted_at
+        description: "Timestamp when the record was extracted from the source."
+
+  - name: stg_product_subcategory
+    description: "Staging table with product subcategory details."
+    config:
+      tags: "purchasing_orders"
+    columns:
+      - name: product_subcategory_id
+        description: "Unique identifier for the product subcategory."
+        data_tests:
+          - unique
+          - not_null
+      - name: product_category_id
+        description: "Identifier for the associated product category."
+      - name: subcategory_description
+        description: "Name or description of the product subcategory."
+      - name: rowguid
+        description: "Globally unique identifier for the subcategory row."
+      - name: updated_at
+        description: "Timestamp when the record was last updated in the source."
+      - name: extracted_at
+        description: "Timestamp when the record was extracted from the source."
+
+  - name: stg_product_category
+    description: "Staging table with product category details."
+    config:
+      tags: "purchasing_orders"
+    columns:
+      - name: product_category_id
+        description: "Unique identifier for the product category."
+        data_tests:
+          - unique
+          - not_null
+      - name: category_description
+        description: "Name or description of the product category."
+      - name: rowguid
+        description: "Globally unique identifier for the category row."
+      - name: updated_at
+        description: "Timestamp when the record was last updated in the source."
+      - name: extracted_at
+        description: "Timestamp when the record was extracted from the source."
+
+  - name: stg_ship_method
+    description: "Staging table with ship method details."
+    config:
+      tags: "purchasing_orders"
+    columns:
+      - name: ship_method_id
+        description: "Unique identifier for the shipping method."
+        data_tests:
+          - unique
+          - not_null
+      - name: ship_company_name
+        description: "Name of the shipping company or method."
+      - name: ship_base_charge
+        description: "Base charge for the shipping method."
+      - name: ship_charge_per_pound
+        description: "Shipping charge per pound."
+      - name: rowguid
+        description: "Globally unique identifier for the ship method row."
+      - name: updated_at
+        description: "Timestamp when the record was last updated in the source."
+      - name: extracted_at
+        description: "Timestamp when the record was extracted from the source."
+      - name: loaded_at
+        description: "Timestamp when the record was loaded."
+
+
+
+
+  # - name: stg_state_province
+  #   description: "Staging table with state details, excluding rows where territory_name does not have '?' character."
+  #   config:
+  #     tags: "purchasing_orders"
+  #   columns:
