@@ -300,11 +300,113 @@ models:
       - name: loaded_at
         description: "Timestamp when the record was loaded."
 
+# Descriptions included in this step, not sourced from Alteryx.
+  - name: stg_vendor
+    description: "Staging table with vendor details."
+    config:
+      tags: "purchasing_orders"
+    columns:
+      - name: business_entity_id
+        description: "A unique identifier for a business entity."
+        data_tests:
+          - unique
+          - not_null
+      - name: account_number
+        description: "The unique account number associated with the entity."
+      - name: vendor_company_name
+        description: "The full name of the vendor company."
+      - name: credit_rating
+        description: "A rating that indicates the vendor's creditworthiness."
+      - name: preferred_vendor_status
+        description: "A flag indicating if the vendor is preferred."
+      - name: activeflag
+        description: "A boolean flag that shows if the vendor is currently active."
+      - name: purchasing_web_service_url
+        description: "The URL for the vendor's purchasing web service."
+      - name: updated_at
+        description: "The timestamp when the record was last modified."
+      - name: extracted_at
+        description: "The timestamp when the record was extracted from the source system."
 
+  - name: stg_business_entity
+    description: "Staging table with business entity IDs."
+    config:
+      tags: "purchasing_orders"
+    columns:
+      - name: business_entity_id
+        description: "Unique identifier for the business entity."
+        data_tests:
+          - unique
+          - not_null
+      - name: rowguid
+        description: "Globally unique identifier for the entity row."
+      - name: updated_at
+        description: "Timestamp when the record was last updated in the source."
+      - name: extracted_at
+        description: "Timestamp when the record was extracted from the source."
 
+  - name: stg_employee
+    description: "Staging table with employee details."
+    config:
+      tags: "purchasing_orders"
+    columns:
+      - name: business_entity_id
+        description: "Unique identifier for the employee."
+        data_tests:
+          - unique
+          - not_null
+      - name: national_id_number
+        description: "National identification number for the employee (may contain PII)."
+      - name: login_id
+        description: "Unique login identifier used by the employee."
+      - name: job_title
+        description: "Job title or position held by the employee."
+      - name: birth_date
+        description: "Employee's date of birth."
+      - name: marital_status
+        description: "Marital status of the employee ('Single' or 'Married')."
+      - name: gender
+        description: "Gender of the employee ('Male' or 'Female')."
+      - name: hire_date
+        description: "Date when the employee was hired."
+      - name: salaried_flag
+        description: "Indicates if the employee is salaried (TRUE/FALSE)."
+      - name: vacation_hours
+        description: "Number of vacation hours available to the employee."
+      - name: sick_leave_hours
+        description: "Number of sick leave hours available to the employee."
+      - name: current_flag
+        description: "Indicates if the employee is currently active (TRUE/FALSE)."
+      - name: rowguid
+        description: "Globally unique identifier for the employee row (for internal use)."
+      - name: updated_at
+        description: "Date when this record was last updated in the source system."
+      - name: extracted_at
+        description: "Timestamp indicating when this record was extracted into the pipeline."
+      - name: organization_node
+        description: "Hierarchical node of the employee within the organization."
+      - name: organization_level
+        description: "Level of the employee within the organizational hierarchy."
 
-  # - name: stg_state_province
-  #   description: "Staging table with state details, excluding rows where territory_name does not have '?' character."
-  #   config:
-  #     tags: "purchasing_orders"
-  #   columns:
+  - name: stg_employee
+    description: "Staging table with department details."
+    config:
+      tags: "purchasing_orders"
+    columns:
+      - name: business_entity_id
+        description: "Unique identifier for the employee."
+        data_tests:
+          - unique
+          - not_null
+      - name: department_id
+        description: "Unique identifier for the department to which the employee was assigned."
+      - name: shift_id
+        description: "Unique identifier for the shift during which the employee worked."
+      - name: work_start_date
+        description: "Date when the employee started working in the department and shift."
+      - name: work_end_date
+        description: "Date when the employee ended working in the department and shift."
+      - name: updated_at
+        description: "Date when this record was last updated in the source system."
+      - name: extracted_at
+        description: "Timestamp indicating when this record was extracted into the pipeline."
