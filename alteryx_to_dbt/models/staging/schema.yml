@@ -148,11 +148,11 @@ models:
     columns:
       - name: purchase_order_id
         description: "Identifier for the associated purchase order."
+      - name: purchase_order_detail_id
+        description: "Unique identifier for the purchase order detail line."
         data_tests:
           - unique
           - not_null
-      - name: purchase_order_detail_id
-        description: "Unique identifier for the purchase order detail line."
       - name: order_qty
         description: "Ordered quantity for the line item."
       - name: product_id
@@ -388,7 +388,7 @@ models:
       - name: organization_level
         description: "Level of the employee within the organizational hierarchy."
 
-  - name: stg_employee
+  - name: stg_employee_department_history
     description: "Staging table with department details."
     config:
       tags: "purchasing_orders"
