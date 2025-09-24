@@ -1,0 +1,40 @@
+version: 2
+
+models:
+  - name: fct_agg_sales_region
+    description: "Fact table with sales information by region"
+    config:
+      tags: "agg_sales_region"
+    columns:
+      - name: territory_id
+        description: "Unique identifier for the sales territory."
+        data_tests:
+          - not_null
+      - name: state_province_id
+        description: "Unique identifier for the state or province."
+        data_tests:
+          - not_null
+      - name: business_entity_id
+        description: "Unique identifier for the salesperson (business entity)."
+        data_tests:
+          - not_null        
+      - name: country_region_code
+        description: "Code for the country or region of the territory."
+      - name: state_province_code
+        description: "Code for the state or province."
+      - name: group_name
+        description: "Group or division name for the territory."
+      - name: country_region_code
+        description: "Full name of the country or region."
+      - name: territory_name
+        description: "Name of the sales territory."
+      - name: total_sales_ytd
+        description: "Total sales year-to-date for the salesperson."
+      - name: total_sales_last_year
+        description: "Total sales for the previous year for the salesperson."
+      - name: total_bonus
+        description: "Total bonus compensation for the salesperson."
+      - name: updated_at
+        description: "Timestamp when the record was last updated in the source."
+      - name: extracted_at
+        description: "Timestamp when the record was extracted from the source."
