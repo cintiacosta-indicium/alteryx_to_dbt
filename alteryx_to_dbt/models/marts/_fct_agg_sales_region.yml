@@ -3,6 +3,8 @@ version: 2
 models:
   - name: fct_agg_sales_region
     description: "Fact table with sales information by region"
+    config:
+      tags: "agg_sales_region"
     columns:
       - name: territory_id
         description: "Unique identifier for the sales territory."
